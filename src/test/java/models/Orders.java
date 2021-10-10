@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Order {
+public class Orders {
 
     public Integer id;
     public Integer petId;

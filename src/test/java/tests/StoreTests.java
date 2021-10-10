@@ -2,7 +2,8 @@ package tests;
 
 import helpers.Specs;
 import models.ApiResponse;
-import models.Order;
+import models.Orders;
+import org.junit.jupiter.api.Order;
 import org.json.JSONObject;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StoreTests {
 
     @Test
-    @org.junit.jupiter.api.Order(1)
+    @Order(1)
     public void postOrder() {
         JSONObject requestParams = new JSONObject();
         requestParams
@@ -26,7 +27,7 @@ public class StoreTests {
                 .put("status", "placed")
                 .put("complete", "true");
 
-        Order order =
+        Orders orders =
                 given()
                         .spec(Specs.request)
                         .header("Content-Type", "application/json").
@@ -35,39 +36,39 @@ public class StoreTests {
                         .post("/store/order").
                 then()
                         .spec(Specs.response200)
-                        .extract().as(Order.class);
+                        .extract().as(Orders.class);
 
-        assertEquals(100, order.getId());
-        assertEquals(1, order.getPetId());
-        assertEquals(1, order.getQuantity());
-        assertEquals("2021-10-05T02:13:36.877+0000", order.getShipDate());
-        assertEquals("placed", order.getStatus());
-        assertEquals(true, order.getComplete());
+        assertEquals(100, orders.getId());
+        assertEquals(1, orders.getPetId());
+        assertEquals(1, orders.getQuantity());
+        assertEquals("2021-10-05T02:13:36.877+0000", orders.getShipDate());
+        assertEquals("placed", orders.getStatus());
+        assertEquals(true, orders.getComplete());
     }
 
     @Test
-    @org.junit.jupiter.api.Order(2)
+    @Order(2)
     public void getOrder() {
-        Order order =
+        Orders orders =
                 given()
                         .spec(Specs.request).
                 when()
                         .get("/store/order/100").
                 then()
                         .spec(Specs.response200)
-                        .extract().as(Order.class);
+                        .extract().as(Orders.class);
 
-        assertEquals(100, order.getId());
-        assertEquals(1, order.getPetId());
-        assertEquals(1, order.getQuantity());
-        assertEquals("2021-10-05T02:13:36.877+0000", order.getShipDate());
-        assertEquals("placed", order.getStatus());
-        assertEquals(true, order.getComplete());
+        assertEquals(100, orders.getId());
+        assertEquals(1, orders.getPetId());
+        assertEquals(1, orders.getQuantity());
+        assertEquals("2021-10-05T02:13:36.877+0000", orders.getShipDate());
+        assertEquals("placed", orders.getStatus());
+        assertEquals(true, orders.getComplete());
 
     }
 
     @Test
-    @org.junit.jupiter.api.Order(3)
+    @Order(3)
     public void deleteOrder() {
         ApiResponse apiResponse =
                 given()
@@ -84,7 +85,7 @@ public class StoreTests {
     }
 
     @Test
-    public void deleteOrder2() { //todo иногда возвращает 200, что странно
+    public void repeatDeleteOrder() { //todo иногда возвращает 200, что странно
         ApiResponse apiResponse =
                 given()
                         .spec(Specs.request).
